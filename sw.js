@@ -1,5 +1,5 @@
 const CACHE_NAME =
-"ussd-pay-v2.2";
+"ussd-pay-v1.2";
 
 const FILES = [
 
