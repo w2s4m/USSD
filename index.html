@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width,initial-scale=1.0,maximum-scale=1">
+
+<meta
+name="theme-color"
+content="#020617">
+
+<meta
+name="apple-mobile-web-app-capable"
+content="yes">
+
+<meta
+name="apple-mobile-web-app-status-bar-style"
+content="black-translucent">
+
+<title>USSD Pay</title>
+
+<link
+rel="manifest"
+href="manifest.json">
+
+<link
+rel="stylesheet"
+href="style.css">
+
+</head>
+
+<body>
+
+<!-- Splash -->
+
+<div id="splash">
+
+    <img
+    src="icons/logo.png"
+    alt="Logo"
+    class="splash-logo">
+
+    <h1>
+    USSD Pay
+    </h1>
+
+    <p>
+    جاري التحميل...
+    </p>
+
+</div>
+
+<!-- Toast -->
+
+<div id="toast"></div>
+
+<!-- Loader -->
+
+<div id="loader">
+
+    <div class="spinner"></div>
+
+</div>
+
+<!-- App -->
+
+<div id="app">
+
+<header>
+
+    <div class="header-left">
+
+        <img
+        src="icons/logo.png"
+        class="logo-small"
+        alt="Logo">
+
+    </div>
+
+    <div class="header-center">
+
+        <h2>
+        USSD Pay
+        </h2>
+
+    </div>
+
+    <div class="header-right">
+
+        <a
+        href="settings.html"
+        class="settings-btn">
+
+        ⚙️
+
+        </a>
+
+    </div>
+
+</header>
+
+<!-- Search -->
+
+<input
+type="search"
+id="searchReceiver"
+placeholder="بحث عن مستلم">
+
+<!-- Favorite Receivers -->
+
+<div id="favoritesSection">
+
+    <h3>
+    ⭐ المفضلة
+    </h3>
+
+    <div
+    id="favoritesList">
+    </div>
+
+</div>
+
+<!-- Main Card -->
+
+<div class="card">
+
+    <div class="services">
+
+        <button
+        class="service active"
+        data-service="jawwal">
+
+        جوال باي
+
+        </button>
+
+        <button
+        class="service"
+        data-service="palpay">
+
+        بال باي
+
+        </button>
+
+    </div>
+
+    <select id="savedUsers">
+
+        <option value="">
+
+        اختر مستلم
+
+        </option>
+
+    </select>
+
+    <input
+    type="text"
+    id="receiverName"
+    placeholder="اسم المستلم">
+
+    <input
+    type="tel"
+    id="phone"
+    placeholder="رقم الهاتف">
+
+    <input
+    type="number"
+    id="amount"
+    placeholder="المبلغ">
+
+    <button
+    class="secondary-btn"
+    onclick="saveReceiver()">
+
+    حفظ المستلم
+
+    </button>
+
+    <button
+    class="main-btn"
+    onclick="generateUSSD()">
+
+    تحويل الآن
+
+    </button>
+
+</div>
+
+<!-- History -->
+
+<div class="card">
+
+    <h3>
+    آخر التحويلات
+    </h3>
+
+    <div
+    id="historyList">
+    </div>
+
+</div>
+
+<footer>
+
+    تصميم
+    <strong>
+    وسام فحجان
+    </strong>
+
+</footer>
+
+</div>
+
+<!-- USSD Preview Modal -->
+
+<div
+id="ussdModal"
+class="modal">
+
+    <div
+    class="modal-content">
+
+        <h3>
+        مراجعة الكود
+        </h3>
+
+        <textarea
+        id="ussdPreview"
+        readonly>
+        </textarea>
+
+        <div
+        class="modal-actions">
+
+            <button
+            onclick="copyUSSD()">
+
+            نسخ
+
+            </button>
+
+            <button
+            onclick="callUSSD()">
+
+            اتصال
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+
+<script>
+
+if(
+'serviceWorker'
+in navigator
+){
+
+    window.addEventListener(
+    'load',
+
+    ()=>{
+
+        navigator
+        .serviceWorker
+        .register(
+            './sw.js'
+        );
+
+    });
+
+}
+
+</script>
+
+</body>
+
+</html>

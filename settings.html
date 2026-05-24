@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width,initial-scale=1.0">
+
+<meta
+name="theme-color"
+content="#020617">
+
+<title>
+الإعدادات - USSD Pay
+</title>
+
+<link
+rel="manifest"
+href="manifest.json">
+
+<link
+rel="stylesheet"
+href="style.css">
+
+</head>
+
+<body>
+
+<div id="app">
+
+<header>
+
+    <div class="header-left">
+
+        <img
+        src="icons/logo.png"
+        class="logo-small"
+        alt="Logo">
+
+    </div>
+
+    <div class="header-center">
+
+        <h2>
+        الإعدادات
+        </h2>
+
+    </div>
+
+    <div class="header-right">
+
+        <a
+        href="index.html"
+        class="settings-btn">
+
+        🏠
+
+        </a>
+
+    </div>
+
+</header>
+
+<!-- المظهر -->
+
+<div class="card">
+
+    <h3>
+    🎨 المظهر
+    </h3>
+
+    <br>
+
+    <button
+    class="main-btn"
+    onclick="toggleTheme()">
+
+    تبديل الوضع الفاتح / الداكن
+
+    </button>
+
+</div>
+
+<!-- كلمة السر -->
+
+<div class="card">
+
+    <h3>
+    🔐 كلمة سر جوال باي
+    </h3>
+
+    <br>
+
+    <button
+    class="secondary-btn"
+    onclick="changePassword()">
+
+    تغيير كلمة السر
+
+    </button>
+
+    <button
+    class="secondary-btn"
+    onclick="clearPassword()">
+
+    حذف كلمة السر
+
+    </button>
+
+</div>
+
+<!-- النسخة الاحتياطية -->
+
+<div class="card">
+
+    <h3>
+    💾 النسخة الاحتياطية
+    </h3>
+
+    <br>
+
+    <button
+    class="main-btn"
+    onclick="exportBackup()">
+
+    تصدير نسخة احتياطية
+
+    </button>
+
+    <br><br>
+
+    <input
+    type="file"
+    id="backupFile"
+    accept=".json">
+
+    <button
+    class="secondary-btn"
+    onclick="restoreBackup()">
+
+    استيراد نسخة احتياطية
+
+    </button>
+
+</div>
+
+<!-- إدارة التطبيق -->
+
+<div class="card">
+
+    <h3>
+    ⚙️ إدارة التطبيق
+    </h3>
+
+    <br>
+
+    <button
+    class="secondary-btn"
+    onclick="resetApp()">
+
+    إعادة ضبط التطبيق بالكامل
+
+    </button>
+
+</div>
+
+<!-- معلومات -->
+
+<div class="card">
+
+    <h3>
+    ℹ️ معلومات التطبيق
+    </h3>
+
+    <br>
+
+    <p>
+    USSD Pay
+    </p>
+
+    <br>
+
+    <p>
+    إصدار 2.0
+    </p>
+
+    <br>
+
+    <p>
+    يدعم جوال باي وبال باي
+    </p>
+
+</div>
+
+<footer>
+
+تصميم
+<strong>
+وسام فحجان
+</strong>
+
+</footer>
+
+</div>
+
+<script src="script.js"></script>
+
+<script>
+
+function changePassword(){
+
+    const password =
+
+    prompt(
+        "أدخل كلمة السر الجديدة"
+    );
+
+    if(!password){
+
+        return;
+
+    }
+
+    localStorage.setItem(
+
+        "ussd_password",
+
+        password
+
+    );
+
+    showToast(
+        "تم حفظ كلمة السر"
+    );
+
+}
+
+function restoreBackup(){
+
+    const file =
+
+    document
+    .getElementById(
+        "backupFile"
+    )
+    .files[0];
+
+    if(!file){
+
+        showToast(
+            "اختر ملف النسخة"
+        );
+
+        return;
+
+    }
+
+    importBackup(file);
+
+}
+
+</script>
+
+</body>
+
+</html>
