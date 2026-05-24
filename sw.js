@@ -1,23 +1,23 @@
 const CACHE_NAME =
-"ussd-pay-v2.1";
+"ussd-pay-v2.2";
 
 const FILES = [
 
-"./",
-"./index.html",
-"./settings.html",
-"./offline.html",
+"/USSD/",
+"/USSD/index.html",
+"/USSD/settings.html",
+"/USSD/offline.html",
 
-"./style.css",
-"./script.js",
+"/USSD/style.css",
+"/USSD/script.js",
 
-"./manifest.json",
+"/USSD/manifest.json",
 
-"./icons/logo.png",
+"/USSD/icons/logo.png",
 
-"./icons/icon-192.png",
-"./icons/icon-512.png",
-"./icons/maskable-512.png"
+"/USSD/icons/icon-192.png",
+"/USSD/icons/icon-512.png",
+"/USSD/icons/maskable-512.png"
 
 ];
 
