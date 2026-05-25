@@ -1,15 +1,26 @@
 {
+  "id": "/",
   "name": "USSD Pay",
-  "short_name": "USSD Pay",
+  "short_name": "USSD",
   "description": "تحويل سريع عبر جوال باي وبال باي",
+
   "lang": "ar",
   "dir": "rtl",
+
   "start_url": "./index.html",
   "scope": "./",
+
   "display": "standalone",
   "orientation": "portrait",
+
   "background_color": "#020617",
   "theme_color": "#020617",
+
+  "categories": [
+    "finance",
+    "utilities",
+    "productivity"
+  ],
 
   "icons": [
 
@@ -30,6 +41,24 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
+    }
+
+  ],
+
+  "shortcuts": [
+
+    {
+      "name": "جوال باي",
+      "short_name": "جوال باي",
+      "description": "تحويل سريع عبر جوال باي",
+      "url": "./index.html?service=jawwal"
+    },
+
+    {
+      "name": "بال باي",
+      "short_name": "بال باي",
+      "description": "تحويل سريع عبر بال باي",
+      "url": "./index.html?service=palpay"
     }
 
   ]

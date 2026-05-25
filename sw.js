@@ -1,31 +1,31 @@
-const CACHE_NAME =
-"ussd-pay-v1.2";
+const CACHE_NAME = "ussd-pay-v2.5";
 
 const FILES = [
 
-"/USSD/",
-"/USSD/index.html",
-"/USSD/settings.html",
-"/USSD/offline.html",
+  "/USSD/",
+  "/USSD/index.html",
+  "/USSD/settings.html",
+  "/USSD/offline.html",
 
-"/USSD/style.css",
-"/USSD/script.js",
+  "/USSD/style.css",
+  "/USSD/script.js",
 
-"/USSD/manifest.json",
+  "/USSD/manifest.json",
 
-"/USSD/icons/logo.png",
-
-"/USSD/icons/icon-192.png",
-"/USSD/icons/icon-512.png",
-"/USSD/icons/maskable-512.png"
+  "/USSD/icons/logo.png",
+  "/USSD/icons/icon-192.png",
+  "/USSD/icons/icon-512.png",
+  "/USSD/icons/maskable-512.png"
 
 ];
 
+// Install
+
 self.addEventListener(
-
 "install",
-
 event=>{
+
+    self.skipWaiting();
 
     event.waitUntil(
 
@@ -43,16 +43,13 @@ event=>{
 
     );
 
-    self.skipWaiting();
-
 }
-
 );
 
+// Activate
+
 self.addEventListener(
-
 "activate",
-
 event=>{
 
     event.waitUntil(
@@ -66,8 +63,7 @@ event=>{
                 keys.map(key=>{
 
                     if(
-                        key !==
-                        CACHE_NAME
+                        key !== CACHE_NAME
                     ){
 
                         return caches.delete(
@@ -87,45 +83,69 @@ event=>{
     self.clients.claim();
 
 }
-
 );
 
+// Fetch
+
 self.addEventListener(
-
 "fetch",
-
 event=>{
+
+    if(
+        event.request.method !==
+        "GET"
+    ){
+        return;
+    }
 
     event.respondWith(
 
-        caches.match(
-            event.request
-        )
+        fetch(event.request)
 
         .then(response=>{
 
-            return (
+            const clone =
+            response.clone();
 
-                response ||
+            caches.open(
+                CACHE_NAME
+            )
 
-                fetch(
-                    event.request
-                )
+            .then(cache=>{
 
-                .catch(()=>{
+                cache.put(
+                    event.request,
+                    clone
+                );
 
-                    return caches.match(
-                        "./offline.html"
-                    );
+            });
 
-                })
+            return response;
 
-            );
+        })
+
+        .catch(()=>{
+
+            return caches.match(
+                event.request
+            )
+
+            .then(response=>{
+
+                return (
+
+                    response ||
+
+                    caches.match(
+                        "/USSD/offline.html"
+                    )
+
+                );
+
+            });
 
         })
 
     );
 
-}
-
-);
+});

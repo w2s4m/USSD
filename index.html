@@ -14,6 +14,10 @@ name="theme-color"
 content="#020617">
 
 <meta
+name="mobile-web-app-capable"
+content="yes">
+
+<meta
 name="apple-mobile-web-app-capable"
 content="yes">
 
@@ -21,7 +25,9 @@ content="yes">
 name="apple-mobile-web-app-status-bar-style"
 content="black-translucent">
 
-<title>USSD Pay</title>
+<title>
+USSD Pay v2.5
+</title>
 
 <link
 rel="manifest"
@@ -30,6 +36,16 @@ href="manifest.json">
 <link
 rel="stylesheet"
 href="style.css">
+
+<link
+rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<meta name="mobile-web-app-capable" content="yes">
+
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+
+<meta name="apple-mobile-web-app-title" content="USSD Pay">
 
 </head>
 
@@ -49,7 +65,7 @@ href="style.css">
     </h1>
 
     <p>
-    جاري التحميل...
+    الإصدار 2.5
     </p>
 
 </div>
@@ -95,7 +111,7 @@ href="style.css">
         href="settings.html"
         class="settings-btn">
 
-        ⚙️
+        <i class="fa-solid fa-gear"></i>
 
         </a>
 
@@ -103,19 +119,45 @@ href="style.css">
 
 </header>
 
+<!-- Device Info -->
+
+<div class="device-card">
+
+    <div id="deviceInfo">
+
+        <i class="fa-solid fa-mobile-screen"></i>
+
+        جاري التعرف على الجهاز...
+
+    </div>
+
+    <div id="dateTime">
+
+        <i class="fa-solid fa-clock"></i>
+
+        ...
+
+    </div>
+
+</div>
+
 <!-- Search -->
 
 <input
 type="search"
 id="searchReceiver"
-placeholder="بحث عن مستلم">
+placeholder="البحث عن مستلم">
 
-<!-- Favorite Receivers -->
+<!-- Favorites -->
 
 <div id="favoritesSection">
 
     <h3>
-    ⭐ المفضلة
+
+        <i class="fa-solid fa-star"></i>
+
+        المفضلة
+
     </h3>
 
     <div
@@ -177,6 +219,8 @@ placeholder="بحث عن مستلم">
     class="secondary-btn"
     onclick="saveReceiver()">
 
+    <i class="fa-solid fa-bookmark"></i>
+
     حفظ المستلم
 
     </button>
@@ -184,6 +228,8 @@ placeholder="بحث عن مستلم">
     <button
     class="main-btn"
     onclick="generateUSSD()">
+
+    <i class="fa-solid fa-paper-plane"></i>
 
     تحويل الآن
 
@@ -196,7 +242,11 @@ placeholder="بحث عن مستلم">
 <div class="card">
 
     <h3>
-    آخر التحويلات
+
+        <i class="fa-solid fa-clock-rotate-left"></i>
+
+        آخر التحويلات
+
     </h3>
 
     <div
@@ -207,16 +257,23 @@ placeholder="بحث عن مستلم">
 
 <footer>
 
-    تصميم
+    USSD Pay v2.5
+
+    <br>
+
+    تصميم وتطوير
+
     <strong>
+
     وسام فحجان
+
     </strong>
 
 </footer>
 
 </div>
 
-<!-- USSD Preview Modal -->
+<!-- USSD Modal -->
 
 <div
 id="ussdModal"
@@ -226,7 +283,11 @@ class="modal">
     class="modal-content">
 
         <h3>
+
+        <i class="fa-solid fa-code"></i>
+
         مراجعة الكود
+
         </h3>
 
         <textarea
@@ -240,6 +301,8 @@ class="modal">
             <button
             onclick="copyUSSD()">
 
+            <i class="fa-solid fa-copy"></i>
+
             نسخ
 
             </button>
@@ -247,11 +310,86 @@ class="modal">
             <button
             onclick="callUSSD()">
 
+            <i class="fa-solid fa-phone"></i>
+
             اتصال
 
             </button>
 
         </div>
+
+    </div>
+
+</div>
+
+<!-- Install App -->
+
+<div
+id="installBanner"
+class="install-banner">
+
+    <div>
+
+        <strong>
+        📱 تثبيت USSD Pay
+        </strong>
+
+        <br>
+
+        <small>
+        تثبيت التطبيق للوصول السريع
+        </small>
+
+    </div>
+
+    <button
+    id="installBtn">
+
+    تثبيت
+
+    </button>
+
+</div>
+
+<!-- iPhone Install -->
+
+<div
+id="iosInstallModal"
+class="modal">
+
+    <div
+    class="modal-content">
+
+        <h3>
+        📱 تثبيت USSD Pay
+        </h3>
+
+        <br>
+
+        <p>
+        لتثبيت التطبيق على iPhone:
+        </p>
+
+        <br>
+
+        <p>
+        1️⃣ اضغط زر المشاركة
+        </p>
+
+        <p>
+        2️⃣ اختر
+        "إضافة إلى الشاشة الرئيسية"
+        </p>
+
+        <br>
+
+        <button
+        class="main-btn"
+        onclick="closeIOSInstall()">
+
+        فهمت
+
+        </button>
 
     </div>
 

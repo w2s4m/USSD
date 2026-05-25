@@ -1,6 +1,8 @@
 // =====================
-// USSD Pay v2
+// USSD Pay v2.5
 // =====================
+
+const APP_VERSION = "2.5";
 
 let selectedService = "jawwal";
 
@@ -10,33 +12,19 @@ let currentUSSD = "";
 // Splash Screen
 // =====================
 
-window.addEventListener(
-"load",
-
-()=>{
+window.addEventListener("load",()=>{
 
     loadTheme();
-
     loadReceivers();
-
     loadHistory();
-
     loadLastAmount();
 
+    detectDevice();
+    updateClock();
+
     setTimeout(()=>{
-
-        const splash =
-        document.getElementById(
-            "splash"
-        );
-
-        if(splash){
-
-            splash.style.display =
-            "none";
-
-        }
-
+        const splash = document.getElementById("splash");
+        if(splash) splash.style.display = "none";
     },2500);
 
 });
@@ -47,28 +35,23 @@ window.addEventListener(
 
 function showToast(message){
 
-    const toast =
-    document.getElementById(
-        "toast"
-    );
+    const toast = document.getElementById("toast");
 
     if(!toast) return;
 
-    toast.textContent =
-    message;
+    toast.textContent = message;
+    toast.classList.add("show");
 
-    toast.classList.add(
-        "show"
-    );
+    toast.style.transform = "translateX(-50%) translateY(0)";
+    toast.style.opacity = "1";
 
     setTimeout(()=>{
 
-        toast.classList.remove(
-            "show"
-        );
+        toast.classList.remove("show");
 
-    },2500);
+        toast.style.opacity = "0";
 
+    },2000);
 }
 
 // =====================
@@ -124,6 +107,40 @@ function haptic(){
     }
 
 }
+
+function detectDevice(){
+
+    const ua = navigator.userAgent;
+
+    let device = "جهاز غير معروف";
+
+    if(/iPhone/i.test(ua)) device = "iPhone";
+    else if(/iPad/i.test(ua)) device = "iPad";
+    else if(/Samsung/i.test(ua)) device = "Samsung";
+    else if(/Xiaomi|Redmi|Mi/i.test(ua)) device = "Xiaomi";
+    else if(/Realme/i.test(ua)) device = "Realme";
+    else if(/Huawei/i.test(ua)) device = "Huawei";
+    else if(/Android/i.test(ua)) device = "Android";
+
+    const el = document.getElementById("deviceInfo");
+
+    if(el){
+        el.innerHTML = `<i class="fa-solid fa-mobile-screen"></i> ${device}`;
+    }
+}
+
+function updateClock(){
+
+    const now = new Date();
+
+    const el = document.getElementById("dateTime");
+
+    if(el){
+        el.innerHTML = `<i class="fa-solid fa-clock"></i> ${now.toLocaleString("ar-PS")}`;
+    }
+}
+
+setInterval(updateClock,1000);
 
 // =====================
 // Theme
@@ -432,6 +449,8 @@ function loadReceivers(){
 
 function saveReceiver(){
 
+    haptic();
+
     const name =
 
     document
@@ -640,6 +659,8 @@ if(searchInput){
 
 function toggleFavorite(index){
 
+    haptic();
+
     const receivers =
 
     getReceivers();
@@ -748,6 +769,8 @@ function loadHistory(){
 
 function generateUSSD(){
 
+    haptic();
+
     const name =
 
     document
@@ -853,6 +876,8 @@ function generateUSSD(){
         saveHistory(
             history
         );
+        localStorage.setItem("lastPhone", phone);
+        localStorage.setItem("lastName", name);
 
         loadHistory();
 
@@ -866,24 +891,14 @@ function generateUSSD(){
 
 function openUSSDModal(){
 
-    const modal =
+    haptic();
 
-    document.getElementById(
-        "ussdModal"
-    );
+    const modal = document.getElementById("ussdModal");
+    const preview = document.getElementById("ussdPreview");
 
-    const preview =
+    preview.value = currentUSSD;
 
-    document.getElementById(
-        "ussdPreview"
-    );
-
-    preview.value =
-    currentUSSD;
-
-    modal.style.display =
-    "flex";
-
+    modal.style.display = "flex";
 }
 
 function closeUSSDModal(){
@@ -924,17 +939,14 @@ function copyUSSD(){
 
 function callUSSD(){
 
-    const encoded =
+    haptic();
 
-    currentUSSD.replace(
-        "#",
-        "%23"
-    );
+    let code = currentUSSD;
 
-    window.location.href =
+    // تحسين التوافق
+    code = encodeURIComponent(code);
 
-    `tel:${encoded}`;
-
+    window.location.href = `tel:${code}`;
 }
 
 // =====================
@@ -1144,6 +1156,20 @@ function importBackup(file){
 
 }
 
+function loadLastReceiver(){
+
+    const phone = localStorage.getItem("lastPhone");
+    const name = localStorage.getItem("lastName");
+
+    if(phone){
+        document.getElementById("phone").value = phone;
+    }
+
+    if(name){
+        document.getElementById("receiverName").value = name;
+    }
+}
+
 // =====================
 // إعادة ضبط التطبيق
 // =====================
@@ -1167,3 +1193,148 @@ function resetApp(){
     location.reload();
 
 }
+
+// =====================
+// PWA Install
+// =====================
+
+let deferredPrompt;
+
+const installBanner =
+document.getElementById(
+    "installBanner"
+);
+
+const installBtn =
+document.getElementById(
+    "installBtn"
+);
+
+window.addEventListener(
+"beforeinstallprompt",
+
+(e)=>{
+
+    e.preventDefault();
+
+    deferredPrompt = e;
+
+    if(installBanner){
+
+        installBanner.style.display =
+        "flex";
+
+    }
+
+});
+
+if(installBtn){
+
+    installBtn.addEventListener(
+
+    "click",
+
+    async()=>{
+
+        if(!deferredPrompt){
+
+            return;
+
+        }
+
+        deferredPrompt.prompt();
+
+        await deferredPrompt.userChoice;
+
+        installBanner.style.display =
+        "none";
+
+        deferredPrompt = null;
+
+    });
+
+}
+
+window.addEventListener(
+"appinstalled",
+
+()=>{
+
+    showToast(
+        "تم تثبيت التطبيق"
+    );
+
+    if(installBanner){
+
+        installBanner.style.display =
+        "none";
+
+    }
+
+});
+
+// =====================
+// iPhone Install Modal
+// =====================
+
+function closeIOSInstall(){
+
+    document
+    .getElementById(
+        "iosInstallModal"
+    )
+    .style.display =
+    "none";
+
+    localStorage.setItem(
+        "iosInstallHint",
+        "1"
+    );
+
+}
+
+const isIOS =
+
+/iPad|iPhone|iPod/.test(
+navigator.userAgent
+);
+
+const isStandalone =
+
+window.matchMedia(
+"(display-mode: standalone)"
+).matches;
+
+const hintShown =
+
+localStorage.getItem(
+    "iosInstallHint"
+);
+
+window.addEventListener(
+"load",
+
+()=>{
+
+    if(
+
+        isIOS &&
+        !isStandalone &&
+        !hintShown
+
+    ){
+
+        setTimeout(()=>{
+
+            document
+            .getElementById(
+                "iosInstallModal"
+            )
+            .style.display =
+            "flex";
+
+        },2500);
+
+    }
+
+});

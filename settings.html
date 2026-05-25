@@ -7,14 +7,18 @@
 
 <meta
 name="viewport"
-content="width=device-width,initial-scale=1.0">
+content="width=device-width,initial-scale=1.0,maximum-scale=1">
 
 <meta
 name="theme-color"
 content="#020617">
 
+<meta
+name="mobile-web-app-capable"
+content="yes">
+
 <title>
-الإعدادات - USSD Pay
+الإعدادات - USSD Pay v2.5
 </title>
 
 <link
@@ -24,6 +28,10 @@ href="manifest.json">
 <link
 rel="stylesheet"
 href="style.css">
+
+<link
+rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 </head>
 
@@ -56,7 +64,7 @@ href="style.css">
         href="index.html"
         class="settings-btn">
 
-        🏠
+        <i class="fa-solid fa-house"></i>
 
         </a>
 
@@ -69,7 +77,8 @@ href="style.css">
 <div class="card">
 
     <h3>
-    🎨 المظهر
+    <i class="fa-solid fa-palette"></i>
+    المظهر
     </h3>
 
     <br>
@@ -78,7 +87,8 @@ href="style.css">
     class="main-btn"
     onclick="toggleTheme()">
 
-    تبديل الوضع الفاتح / الداكن
+    <i class="fa-solid fa-moon"></i>
+    تبديل الوضع
 
     </button>
 
@@ -89,7 +99,8 @@ href="style.css">
 <div class="card">
 
     <h3>
-    🔐 كلمة سر جوال باي
+    <i class="fa-solid fa-lock"></i>
+    كلمة سر جوال باي
     </h3>
 
     <br>
@@ -98,6 +109,7 @@ href="style.css">
     class="secondary-btn"
     onclick="changePassword()">
 
+    <i class="fa-solid fa-key"></i>
     تغيير كلمة السر
 
     </button>
@@ -106,6 +118,7 @@ href="style.css">
     class="secondary-btn"
     onclick="clearPassword()">
 
+    <i class="fa-solid fa-trash"></i>
     حذف كلمة السر
 
     </button>
@@ -117,7 +130,8 @@ href="style.css">
 <div class="card">
 
     <h3>
-    💾 النسخة الاحتياطية
+    <i class="fa-solid fa-database"></i>
+    النسخة الاحتياطية
     </h3>
 
     <br>
@@ -126,7 +140,8 @@ href="style.css">
     class="main-btn"
     onclick="exportBackup()">
 
-    تصدير نسخة احتياطية
+    <i class="fa-solid fa-file-export"></i>
+    تصدير نسخة
 
     </button>
 
@@ -141,7 +156,8 @@ href="style.css">
     class="secondary-btn"
     onclick="restoreBackup()">
 
-    استيراد نسخة احتياطية
+    <i class="fa-solid fa-file-import"></i>
+    استيراد نسخة
 
     </button>
 
@@ -152,7 +168,8 @@ href="style.css">
 <div class="card">
 
     <h3>
-    ⚙️ إدارة التطبيق
+    <i class="fa-solid fa-gear"></i>
+    إدارة التطبيق
     </h3>
 
     <br>
@@ -161,7 +178,40 @@ href="style.css">
     class="secondary-btn"
     onclick="resetApp()">
 
-    إعادة ضبط التطبيق بالكامل
+    <i class="fa-solid fa-power-off"></i>
+    إعادة ضبط
+
+    </button>
+
+</div>
+
+<!-- دعم صاحب المشروع -->
+
+<div class="card">
+
+    <h3>
+    <i class="fa-solid fa-heart"></i>
+    ادعم صاحب المشروع
+    </h3>
+
+    <br>
+
+    <p>
+    وسام فحجان جوال باي و بال باي
+    </p>
+
+    <p>
+    0599747574
+    </p>
+
+    <br>
+
+    <button
+    class="main-btn"
+    onclick="copySupportNumber()">
+
+    <i class="fa-solid fa-copy"></i>
+    نسخ الرقم
 
     </button>
 
@@ -172,22 +222,15 @@ href="style.css">
 <div class="card">
 
     <h3>
-    ℹ️ معلومات التطبيق
+    <i class="fa-solid fa-circle-info"></i>
+    معلومات التطبيق
     </h3>
 
     <br>
 
     <p>
-    USSD Pay
+    USSD Pay v2.5
     </p>
-
-    <br>
-
-    <p>
-    إصدار 2.0
-    </p>
-
-    <br>
 
     <p>
     يدعم جوال باي وبال باي
@@ -197,7 +240,12 @@ href="style.css">
 
 <footer>
 
-تصميم
+USSD Pay v2.5
+
+<br>
+
+تصميم وتطوير
+
 <strong>
 وسام فحجان
 </strong>
@@ -213,52 +261,36 @@ href="style.css">
 function changePassword(){
 
     const password =
+    prompt("أدخل كلمة السر الجديدة");
 
-    prompt(
-        "أدخل كلمة السر الجديدة"
-    );
-
-    if(!password){
-
-        return;
-
-    }
+    if(!password) return;
 
     localStorage.setItem(
-
         "ussd_password",
-
         password
-
     );
 
-    showToast(
-        "تم حفظ كلمة السر"
-    );
-
+    showToast("تم حفظ كلمة السر");
 }
 
 function restoreBackup(){
 
     const file =
-
-    document
-    .getElementById(
-        "backupFile"
-    )
-    .files[0];
+    document.getElementById("backupFile").files[0];
 
     if(!file){
-
-        showToast(
-            "اختر ملف النسخة"
-        );
-
+        showToast("اختر ملف");
         return;
-
     }
 
     importBackup(file);
+}
+
+function copySupportNumber(){
+
+    navigator.clipboard.writeText("0599747574");
+
+    showToast("تم نسخ الرقم");
 
 }
 
