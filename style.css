@@ -192,10 +192,17 @@ body::after{
 
 }
 
+#toast{
+    transition:
+    opacity .3s ease,
+    transform .3s ease;
+}
+
 #toast.show{
-
     opacity:1;
-
+    transform:
+    translateX(-50%)
+    translateY(0);
 }
 
 /* ===== Loader ===== */
@@ -791,6 +798,48 @@ textarea:focus{
     }
 }
 
+/* ===== Clock ===== */
+
+.clock-box{
+
+    text-align:center;
+
+    padding:12px;
+
+}
+
+.clock-time{
+
+    font-size:28px;
+
+    font-weight:700;
+
+    letter-spacing:2px;
+
+    font-family:
+    "SF Pro Display",
+    "Segoe UI",
+    sans-serif;
+
+}
+
+.clock-date{
+
+    margin-top:4px;
+
+    font-size:13px;
+
+    opacity:.75;
+
+    font-weight:500;
+
+    font-family:
+    "SF Pro Text",
+    "Segoe UI",
+    sans-serif;
+
+}
+
 /* ===== Install Banner ===== */
 
 .install-banner{
@@ -850,5 +899,69 @@ textarea:focus{
     var(--primary),
     var(--secondary)
     );
+
+}
+
+.avatar{
+
+    width:45px;
+    height:45px;
+
+    border-radius:50%;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-weight:bold;
+
+    background:
+    linear-gradient(
+    135deg,
+    #2563eb,
+    #06b6d4
+    );
+
+    color:white;
+
+}
+
+.device-bar{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:10px;
+
+    font-size:14px;
+
+    font-weight:600;
+
+}
+
+#deviceName{
+
+    text-align:left;
+
+    min-width:80px;
+
+}
+
+#currentDate{
+
+    flex:1;
+
+    text-align:center;
+
+}
+
+#currentTime{
+
+    text-align:right;
+
+    min-width:110px;
 
 }

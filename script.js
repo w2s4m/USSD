@@ -1,12 +1,36 @@
 // =====================
-// USSD Pay v2.5
+// USSD Pay v2.7
 // =====================
 
-const APP_VERSION = "2.5";
+const APP_VERSION = "2.7";
+
+const VERSION_URL =
+
+"/USSD/version.json";
+
+const savedVersion =
+localStorage.getItem(
+    "appVersion"
+);
+
+if(
+    savedVersion !== APP_VERSION
+){
+
+    localStorage.clear();
+
+    localStorage.setItem(
+        "appVersion",
+        APP_VERSION
+    );
+
+}
 
 let selectedService = "jawwal";
 
 let currentUSSD = "";
+
+let historyExpanded = false;
 
 // =====================
 // Splash Screen
@@ -35,23 +59,31 @@ window.addEventListener("load",()=>{
 
 function showToast(message){
 
-    const toast = document.getElementById("toast");
+    const toast =
+    document.getElementById(
+        "toast"
+    );
 
-    if(!toast) return;
+    toast.textContent =
+    message;
 
-    toast.textContent = message;
-    toast.classList.add("show");
+    toast.classList.add(
+        "show"
+    );
 
-    toast.style.transform = "translateX(-50%) translateY(0)";
-    toast.style.opacity = "1";
+    clearTimeout(
+        window.toastTimer
+    );
 
+    window.toastTimer =
     setTimeout(()=>{
 
-        toast.classList.remove("show");
-
-        toast.style.opacity = "0";
+        toast.classList.remove(
+            "show"
+        );
 
     },2000);
+
 }
 
 // =====================
@@ -125,22 +157,61 @@ function detectDevice(){
     const el = document.getElementById("deviceInfo");
 
     if(el){
-        el.innerHTML = `<i class="fa-solid fa-mobile-screen"></i> ${device}`;
+
+        window.deviceName = device;
+
+        el.innerHTML =
+        `<i class="fa-solid fa-mobile-screen"></i> ${device}`;
+
     }
+    window.deviceName = device;
 }
+
+// =====================
+// Clock
+// =====================
 
 function updateClock(){
 
     const now = new Date();
 
-    const el = document.getElementById("dateTime");
+    const time =
+    now.toLocaleTimeString(
+        "en-US",
+        {
+            hour:"numeric",
+            minute:"2-digit",
+            second:"2-digit",
+            hour12:true
+        }
+    );
 
-    if(el){
-        el.innerHTML = `<i class="fa-solid fa-clock"></i> ${now.toLocaleString("ar-PS")}`;
-    }
+    const date =
+    `${String(now.getDate()).padStart(2,"0")}/${
+    String(now.getMonth()+1).padStart(2,"0")
+    }/${now.getFullYear()}`;
+
+    document.getElementById(
+        "currentTime"
+    ).textContent = time;
+
+    document.getElementById(
+        "currentDate"
+    ).textContent = date;
+
+    document.getElementById(
+        "deviceName"
+    ).textContent =
+    window.deviceName || "";
+
 }
 
-setInterval(updateClock,1000);
+updateClock();
+
+setInterval(
+    updateClock,
+    1000
+);
 
 // =====================
 // Theme
@@ -341,14 +412,27 @@ function saveReceivers(data){
 
 function loadReceivers(){
 
-    const select =
+    const receivers =
+    getReceivers();
 
+    const counter =
+    document.getElementById(
+        "receiverCount"
+    );
+
+    if(counter){
+
+        counter.textContent =
+        `${receivers.length} مستلم`;
+
+    }
+
+    const select =
     document.getElementById(
         "savedUsers"
     );
 
     const favorites =
-
     document.getElementById(
         "favoritesList"
     );
@@ -369,9 +453,6 @@ function loadReceivers(){
 
     }
 
-    const receivers =
-    getReceivers();
-
     receivers.forEach(
 
     (receiver,index)=>{
@@ -382,8 +463,7 @@ function loadReceivers(){
             "option"
         );
 
-        option.value =
-        index;
+        option.value = receiver.id;
 
         option.textContent =
 
@@ -412,10 +492,16 @@ function loadReceivers(){
             item.innerHTML =
 
             `
+            <div class="avatar">
+            ${receiver.name.charAt(0)}
+            </div>
+            
             <strong>
             ${receiver.name}
             </strong>
+            
             <br>
+            
             ${receiver.phone}
             `;
 
@@ -540,38 +626,28 @@ document.getElementById(
 if(savedUsers){
 
     savedUsers.addEventListener(
-
     "change",
-
     function(){
 
         const receivers =
-
         getReceivers();
 
         const receiver =
-
-        receivers[
-            this.value
-        ];
+        receivers.find(
+            r => r.id == this.value
+        );
 
         if(!receiver){
-
             return;
-
         }
 
         document
-        .getElementById(
-            "receiverName"
-        )
+        .getElementById("receiverName")
         .value =
         receiver.name;
 
         document
-        .getElementById(
-            "phone"
-        )
+        .getElementById("phone")
         .value =
         receiver.phone;
 
@@ -653,35 +729,7 @@ if(searchInput){
     });
 
 }
-// =====================
-// المفضلة
-// =====================
-
-function toggleFavorite(index){
-
-    haptic();
-
-    const receivers =
-
-    getReceivers();
-
-    receivers[index]
-    .favorite =
-
-    !receivers[index]
-    .favorite;
-
-    saveReceivers(
-        receivers
-    );
-
-    loadReceivers();
-
-    showToast(
-        "تم تحديث المفضلة"
-    );
-
-}
+    
 // =====================
 // سجل التحويلات
 // =====================
@@ -713,29 +761,29 @@ function saveHistory(data){
 function loadHistory(){
 
     const container =
-
     document.getElementById(
         "historyList"
     );
 
     if(!container){
-
         return;
-
     }
 
     container.innerHTML = "";
 
     const history =
-    getHistory();
-
-    history
+    getHistory()
     .slice()
-    .reverse()
-    .forEach(item=>{
+    .reverse();
+
+    const displayedHistory =
+    historyExpanded
+    ? history
+    : history.slice(0,3);
+
+    displayedHistory.forEach(item=>{
 
         const div =
-
         document.createElement(
             "div"
         );
@@ -755,11 +803,38 @@ function loadHistory(){
         <small>${item.date}</small>
         `;
 
-        container.appendChild(
-            div
-        );
+        container.appendChild(div);
 
     });
+
+    if(history.length > 3){
+
+        const btn =
+        document.createElement(
+            "button"
+        );
+
+        btn.className =
+        "secondary-btn";
+
+        btn.textContent =
+
+        historyExpanded
+        ? "إخفاء التحويلات"
+        : "عرض المزيد";
+
+        btn.onclick = ()=>{
+
+            historyExpanded =
+            !historyExpanded;
+
+            loadHistory();
+
+        };
+
+        container.appendChild(btn);
+
+    }
 
 }
 
@@ -929,6 +1004,8 @@ function copyUSSD(){
         "تم نسخ الكود"
     );
 
+    closeUSSDModal();
+
     haptic();
 
 }
@@ -946,6 +1023,8 @@ function callUSSD(){
     // تحسين التوافق
     code = encodeURIComponent(code);
 
+    closeUSSDModal();
+
     window.location.href = `tel:${code}`;
 }
 
@@ -953,27 +1032,21 @@ function callUSSD(){
 // إغلاق النافذة
 // =====================
 
-window.addEventListener(
-"click",
-
-(event)=>{
+function closeUSSDModal(){
 
     const modal =
-
     document.getElementById(
         "ussdModal"
     );
 
-    if(
-        event.target ===
-        modal
-    ){
+    modal.style.display =
+    "none";
 
-        closeUSSDModal();
+    showToast(
+        "تم إغلاق النافذة"
+    );
 
-    }
-
-});
+}
 
 // =====================
 // نسخة احتياطية
@@ -1338,3 +1411,242 @@ window.addEventListener(
     }
 
 });
+
+function deleteReceiver(id){
+
+    let receivers =
+    getReceivers();
+
+    receivers =
+    receivers.filter(
+
+    r=>
+
+    r.id !== id
+
+    );
+
+    saveReceivers(
+        receivers
+    );
+
+    loadReceivers();
+
+    showToast(
+        "تم الحذف"
+    );
+
+}
+
+function editReceiver(id){
+
+    const receivers =
+    getReceivers();
+
+    const receiver =
+    receivers.find(
+        r=>r.id===id
+    );
+
+    if(!receiver){
+        return;
+    }
+
+    document
+    .getElementById(
+        "receiverName"
+    )
+    .value =
+    receiver.name;
+
+    document
+    .getElementById(
+        "phone"
+    )
+    .value =
+    receiver.phone;
+
+}
+
+function reTransfer(
+phone,
+amount
+){
+
+    document
+    .getElementById(
+        "phone"
+    )
+    .value =
+    phone;
+
+    document
+    .getElementById(
+        "amount"
+    )
+    .value =
+    amount;
+
+    showToast(
+        "تم تعبئة البيانات"
+    );
+
+}
+
+async function loadBattery(){
+
+    if(
+        !navigator.getBattery
+    ){
+        return;
+    }
+
+    const battery =
+    await navigator.getBattery();
+
+    document
+    .getElementById(
+        "batteryInfo"
+    )
+    .textContent =
+
+    `🔋 ${
+    Math.round(
+    battery.level*100
+    )
+    }%`;
+
+}
+
+loadBattery();
+
+function updateNetwork(){
+
+    const el =
+    document.getElementById(
+        "networkStatus"
+    );
+
+    if(!el) return;
+
+    if(
+        navigator.onLine
+    ){
+
+        el.innerHTML =
+        "🟢 متصل";
+
+    }
+
+    else{
+
+        el.innerHTML =
+        "🔴 غير متصل";
+
+    }
+
+}
+
+window.addEventListener(
+"online",
+updateNetwork
+);
+
+window.addEventListener(
+"offline",
+updateNetwork
+);
+
+updateNetwork();
+
+if(
+
+localStorage.getItem(
+"lastVersion"
+)
+
+!==
+
+APP_VERSION
+
+){
+
+showToast(
+`تم التحديث للإصدار ${APP_VERSION}`
+);
+
+localStorage.setItem(
+"lastVersion",
+APP_VERSION
+);
+
+}
+
+async function checkForUpdates(){
+
+    if(!navigator.onLine){
+        return;
+    }
+
+    try{
+
+        const response =
+        await fetch(
+            VERSION_URL +
+            "?t=" +
+            Date.now()
+        );
+
+        const data =
+        await response.json();
+
+        if(
+            data.version !==
+            APP_VERSION
+        ){
+
+            const update =
+            confirm(
+            `يتوفر إصدار جديد (${data.version}) هل تريد التحديث؟`
+            );
+
+            if(update){
+
+                if(
+                    "caches" in window
+                ){
+
+                    const keys =
+                    await caches.keys();
+
+                    await Promise.all(
+                        keys.map(
+                            key =>
+                            caches.delete(key)
+                        )
+                    );
+
+                }
+
+                location.reload(true);
+
+            }
+
+        }
+
+    }
+
+    catch(error){
+
+        console.log(
+        "تعذر التحقق من التحديثات"
+        );
+
+    }
+
+}
+
+window.addEventListener(
+"load",
+checkForUpdates
+);

@@ -26,7 +26,7 @@ name="apple-mobile-web-app-status-bar-style"
 content="black-translucent">
 
 <title>
-USSD Pay v2.5
+USSD Pay v2.7
 </title>
 
 <link
@@ -37,9 +37,7 @@ href="manifest.json">
 rel="stylesheet"
 href="style.css">
 
-<link
-rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="css/all.min.css">
 
 <meta name="mobile-web-app-capable" content="yes">
 
@@ -65,7 +63,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     </h1>
 
     <p>
-    الإصدار 2.5
+    Ver:2.7
     </p>
 
 </div>
@@ -123,48 +121,26 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 
 <div class="device-card">
 
-    <div id="deviceInfo">
+    <div class="device-bar">
 
-        <i class="fa-solid fa-mobile-screen"></i>
+        <span id="deviceName"></span>
 
-        جاري التعرف على الجهاز...
+        <span id="currentDate"></span>
 
-    </div>
-
-    <div id="dateTime">
-
-        <i class="fa-solid fa-clock"></i>
-
-        ...
+        <span id="currentTime"></span>
 
     </div>
 
 </div>
 
-<!-- Search -->
+<div class="device-card">
 
-<input
-type="search"
-id="searchReceiver"
-placeholder="البحث عن مستلم">
-
-<!-- Favorites -->
-
-<div id="favoritesSection">
-
-    <h3>
-
-        <i class="fa-solid fa-star"></i>
-
-        المفضلة
-
-    </h3>
-
-    <div
-    id="favoritesList">
+    <div id="networkStatus">
+        🟢 متصل
     </div>
 
 </div>
+
 
 <!-- Main Card -->
 
@@ -257,7 +233,7 @@ placeholder="البحث عن مستلم">
 
 <footer>
 
-    USSD Pay v2.5
+    USSD Pay v2.7
 
     <br>
 
@@ -295,26 +271,22 @@ class="modal">
         readonly>
         </textarea>
 
-        <div
-        class="modal-actions">
+        <div class="modal-actions">
 
-            <button
-            onclick="copyUSSD()">
-
+        <button onclick="copyUSSD()">
             <i class="fa-solid fa-copy"></i>
+        نسخ    
+        </button>
 
-            نسخ
-
-            </button>
-
-            <button
-            onclick="callUSSD()">
-
+        <button onclick="callUSSD()">
             <i class="fa-solid fa-phone"></i>
+        اتصال    
+        </button>
 
-            اتصال
-
-            </button>
+        <button onclick="closeUSSDModal()">
+            <i class="fa-solid fa-check"></i>
+         فهمت    
+        </button>
 
         </div>
 

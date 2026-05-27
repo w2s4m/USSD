@@ -1,4 +1,4 @@
-const CACHE_NAME = "ussd-pay-v2.5";
+const CACHE_NAME = "ussd-pay-v2.7";
 
 const FILES = [
 
@@ -11,6 +11,10 @@ const FILES = [
   "/USSD/script.js",
 
   "/USSD/manifest.json",
+  "/USSD/css/all.min.css",
+  "/USSD/webfonts/fa-solid-900.woff2",
+  "/USSD/webfonts/fa-regular-400.woff2",
+  "/USSD/webfonts/fa-brands-400.woff2",
 
   "/USSD/icons/logo.png",
   "/USSD/icons/icon-192.png",
