@@ -1,4 +1,4 @@
-const CACHE_NAME = "ussd-pay-v2.7";
+const CACHE_NAME = "ussd-pay-v2.8";
 
 const FILES = [
 

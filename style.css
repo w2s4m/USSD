@@ -16,17 +16,125 @@
 
 body.light{
 
-    --bg:#f8fafc;
+    --bg:#eef4ff;
 
-    --card:rgba(255,255,255,.75);
+    --card:rgba(255,255,255,.65);
 
     --border:rgba(255,255,255,.9);
 
     --text:#0f172a;
 
-    --text2:#475569;
+    --text2:#64748b;
 
-    --input:#ffffff;
+    --input:rgba(255,255,255,.85);
+
+    --primary:#3b82f6;
+
+    --secondary:#06b6d4;
+
+}
+
+body.light{
+
+    background:
+    linear-gradient(
+    135deg,
+    #eef4ff 0%,
+    #f8fafc 40%,
+    #e0f2fe 100%
+    );
+
+}
+
+body.light::before{
+
+    background:#60a5fa;
+    opacity:.25;
+
+}
+
+body.light::after{
+
+    background:#22d3ee;
+    opacity:.25;
+
+}
+
+body.light .service{
+
+    background:#dbeafe;
+
+    color:#1e293b;
+
+}
+
+body.light .secondary-btn{
+
+    background:#e0f2fe;
+
+    color:#0f172a;
+
+}
+
+body.light .history-item{
+
+    background:
+    rgba(59,130,246,.08);
+
+}
+
+body.light .favorite-item{
+
+    background:
+    rgba(255,255,255,.7);
+
+}
+
+body.light input,
+body.light select,
+body.light textarea{
+
+    background:
+    rgba(255,255,255,.85);
+
+    border:
+    1px solid rgba(59,130,246,.08);
+
+}
+
+body.light .service{
+
+    background:#e2e8f0;
+
+    color:#334155;
+
+    border:
+    1px solid rgba(59,130,246,.12);
+
+}
+
+body.light .service.active{
+
+    background:
+    linear-gradient(
+    135deg,
+    #3b82f6,
+    #06b6d4
+    );
+
+    color:white;
+
+    border:none;
+
+    box-shadow:
+    0 6px 20px rgba(59,130,246,.25);
+
+}
+
+.service.active{
+
+    transform:
+    translateY(-2px);
 
 }
 
@@ -157,6 +265,34 @@ body::after{
 #splash p{
 
     opacity:.8;
+
+}
+
+body.light #splash{
+
+    background:
+    linear-gradient(
+    135deg,
+    #eef4ff,
+    #f8fafc,
+    #e0f2fe
+    );
+
+    color:#0f172a;
+
+}
+
+body.light #splash p{
+
+    color:#475569;
+
+    opacity:1;
+
+}
+
+body.light #splash h1{
+
+    color:#0f172a;
 
 }
 

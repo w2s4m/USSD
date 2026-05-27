@@ -1,8 +1,8 @@
 // =====================
-// USSD Pay v2.7
+// USSD Pay v2.8
 // =====================
 
-const APP_VERSION = "2.7";
+const APP_VERSION = "2.8";
 
 const VERSION_URL =
 
@@ -144,27 +144,55 @@ function detectDevice(){
 
     const ua = navigator.userAgent;
 
-    let device = "جهاز غير معروف";
+    let device = "Mobile";
 
-    if(/iPhone/i.test(ua)) device = "iPhone";
-    else if(/iPad/i.test(ua)) device = "iPad";
-    else if(/Samsung/i.test(ua)) device = "Samsung";
-    else if(/Xiaomi|Redmi|Mi/i.test(ua)) device = "Xiaomi";
-    else if(/Realme/i.test(ua)) device = "Realme";
-    else if(/Huawei/i.test(ua)) device = "Huawei";
-    else if(/Android/i.test(ua)) device = "Android";
+    if(/iPhone/i.test(ua))
+        device = "iPhone";
 
-    const el = document.getElementById("deviceInfo");
+    else if(/iPad/i.test(ua))
+        device = "iPad";
+
+    else if(/Samsung/i.test(ua))
+        device = "Samsung";
+
+    else if(/Xiaomi|Redmi|Mi/i.test(ua))
+        device = "Xiaomi";
+
+    else if(/Huawei/i.test(ua))
+        device = "Huawei";
+
+    else if(/Realme/i.test(ua))
+        device = "Realme";
+
+    else if(/OPPO/i.test(ua))
+        device = "OPPO";
+
+    else if(/Vivo/i.test(ua))
+        device = "Vivo";
+
+    else if(/Android/i.test(ua))
+        device = "Android";
+
+    else if(/Mac/i.test(ua))
+        device = "Mac";
+
+    else if(/Windows/i.test(ua))
+        device = "Windows";
+
+    window.deviceName = device;
+
+    const el =
+    document.getElementById(
+        "deviceName"
+    );
 
     if(el){
 
-        window.deviceName = device;
-
-        el.innerHTML =
-        `<i class="fa-solid fa-mobile-screen"></i> ${device}`;
+        el.textContent =
+        device;
 
     }
-    window.deviceName = device;
+
 }
 
 // =====================
