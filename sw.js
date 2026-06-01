@@ -1,26 +1,21 @@
 const CACHE_NAME = "ussd-pay-v2.8";
 
 const FILES = [
-
-  "/USSD/",
-  "/USSD/index.html",
-  "/USSD/settings.html",
-  "/USSD/offline.html",
-
-  "/USSD/style.css",
-  "/USSD/script.js",
-
-  "/USSD/manifest.json",
-  "/USSD/css/all.min.css",
-  "/USSD/webfonts/fa-solid-900.woff2",
-  "/USSD/webfonts/fa-regular-400.woff2",
-  "/USSD/webfonts/fa-brands-400.woff2",
-
-  "/USSD/icons/logo.png",
-  "/USSD/icons/icon-192.png",
-  "/USSD/icons/icon-512.png",
-  "/USSD/icons/maskable-512.png"
-
+  "./",
+  "./index.html",
+  "./settings.html",
+  "./offline.html",
+  "./style.css",
+  "./script.js",
+  "./manifest.json",
+  "./css/all.min.css",
+  "./webfonts/fa-solid-900.woff2",
+  "./webfonts/fa-regular-400.woff2",
+  "./webfonts/fa-brands-400.woff2",
+  "./icons/logo.png",
+  "./icons/icon-192.png",
+  "./icons/icon-512.png",
+  "./icons/maskable-512.png"
 ];
 
 // Install
@@ -141,7 +136,7 @@ event=>{
                     response ||
 
                     caches.match(
-                        "/USSD/offline.html"
+                        "./offline.html"
                     )
 
                 );

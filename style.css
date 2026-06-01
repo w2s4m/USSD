@@ -1088,7 +1088,7 @@ textarea:focus{
 
 #deviceName{
 
-    text-align:left;
+    text-align:right;
 
     min-width:80px;
 
@@ -1104,7 +1104,7 @@ textarea:focus{
 
 #currentTime{
 
-    text-align:right;
+    text-align:left;
 
     min-width:110px;
 
