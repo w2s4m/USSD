@@ -1,65 +1,101 @@
 {
   "id": "/",
-  "name": "USSD Pay",
-  "short_name": "USSD",
-  "description": "تحويل سريع عبر جوال باي وبال باي",
-
+  "name": "USSD Pay - تحويل أموال سريع",
+  "short_name": "USSD Pay",
+  "description": "تطبيق USSD Pay لتحويل الأموال عبر جوال باي وبال باي",
+  
   "lang": "ar",
   "dir": "rtl",
-
+  
   "start_url": "./index.html",
   "scope": "./",
-
+  
   "display": "standalone",
-  "orientation": "portrait",
-
-  "background_color": "#020617",
-  "theme_color": "#020617",
-
-  "categories": [
-    "finance",
-    "utilities",
-    "productivity"
+  "orientation": "portrait-primary",
+  
+  "theme_color": "#0f172a",
+  "background_color": "#0f172a",
+  
+  "categories": ["finance", "utilities", "productivity"],
+  "screenshots": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 540 720'><rect fill='%230f172a' width='540' height='720'/><text x='270' y='360' font-size='80' font-weight='bold' text-anchor='middle' fill='%232563eb' font-family='Arial'>₪</text><text x='270' y='420' font-size='24' font-weight='bold' text-anchor='middle' fill='%23ffffff' font-family='Arial'>USSD Pay</text></svg>",
+      "sizes": "540x720",
+      "type": "image/svg+xml",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1280 720'><rect fill='%230f172a' width='1280' height='720'/><text x='640' y='360' font-size='120' font-weight='bold' text-anchor='middle' fill='%232563eb' font-family='Arial'>₪</text><text x='640' y='420' font-size='36' font-weight='bold' text-anchor='middle' fill='%23ffffff' font-family='Arial'>USSD Pay v3.0</text></svg>",
+      "sizes": "1280x720",
+      "type": "image/svg+xml",
+      "form_factor": "wide"
+    }
   ],
-
+  
   "icons": [
-
     {
-      "src": "icons/icon-192.png",
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%230f172a' width='192' height='192' rx='45'/><text x='96' y='130' font-size='100' font-weight='bold' text-anchor='middle' fill='%232563eb' font-family='Arial'>₪</text></svg>",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/svg+xml",
+      "purpose": "any"
     },
-
     {
-      "src": "icons/icon-512.png",
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect fill='%230f172a' width='512' height='512' rx='120'/><text x='256' y='380' font-size='300' font-weight='bold' text-anchor='middle' fill='%232563eb' font-family='Arial'>₪</text></svg>",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/svg+xml",
+      "purpose": "any"
     },
-
     {
-      "src": "icons/maskable-512.png",
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><circle cx='96' cy='96' r='90' fill='%230f172a' stroke='%232563eb' stroke-width='4'/><text x='96' y='130' font-size='100' font-weight='bold' text-anchor='middle' fill='%232563eb' font-family='Arial'>₪</text></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><circle cx='256' cy='256' r='240' fill='%230f172a' stroke='%232563eb' stroke-width='10'/><text x='256' y='380' font-size='300' font-weight='bold' text-anchor='middle' fill='%232563eb' font-family='Arial'>₪</text></svg>",
       "sizes": "512x512",
-      "type": "image/png",
+      "type": "image/svg+xml",
       "purpose": "maskable"
     }
-
   ],
-
+  
   "shortcuts": [
-
     {
-      "name": "جوال باي",
+      "name": "تحويل عبر جوال باي",
       "short_name": "جوال باي",
       "description": "تحويل سريع عبر جوال باي",
-      "url": "./index.html?service=jawwal"
+      "url": "./index.html?service=jawwal",
+      "icons": [
+        {
+          "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'><rect fill='%232563eb' width='96' height='96' rx='20'/><text x='48' y='68' font-size='50' font-weight='bold' text-anchor='middle' fill='%23ffffff' font-family='Arial'>₪</text></svg>",
+          "sizes": "96x96",
+          "type": "image/svg+xml"
+        }
+      ]
     },
-
     {
-      "name": "بال باي",
+      "name": "تحويل عبر بال باي",
       "short_name": "بال باي",
       "description": "تحويل سريع عبر بال باي",
-      "url": "./index.html?service=palpay"
+      "url": "./index.html?service=palpay",
+      "icons": [
+        {
+          "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'><rect fill='%2306b6d4' width='96' height='96' rx='20'/><text x='48' y='68' font-size='50' font-weight='bold' text-anchor='middle' fill='%23ffffff' font-family='Arial'>💳</text></svg>",
+          "sizes": "96x96",
+          "type": "image/svg+xml"
+        }
+      ]
     }
-
-  ]
+  ],
+  
+  "share_target": {
+    "action": "./share.html",
+    "method": "POST",
+    "enctype": "application/x-www-form-urlencoded",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  }
 }

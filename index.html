@@ -1,398 +1,242 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
-
-<meta charset="UTF-8">
-
-<meta
-name="viewport"
-content="width=device-width,initial-scale=1.0,maximum-scale=1">
-
-<meta
-name="theme-color"
-content="#020617">
-
-<meta
-name="mobile-web-app-capable"
-content="yes">
-
-<meta
-name="apple-mobile-web-app-capable"
-content="yes">
-
-<meta
-name="apple-mobile-web-app-status-bar-style"
-content="black-translucent">
-
-<title>
-USSD Pay v2.8
-</title>
-
-<link
-rel="manifest"
-href="manifest.json">
-
-<link
-rel="stylesheet"
-href="style.css">
-
-<link rel="stylesheet" href="css/all.min.css">
-
-<meta name="mobile-web-app-capable" content="yes">
-
-<link rel="apple-touch-icon" href="icons/icon-192.png">
-
-<meta name="apple-mobile-web-app-title" content="USSD Pay">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="description" content="تطبيق USSD Pay لتحويل الأموال عبر جوال باي وبال باي">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="USSD Pay">
+    
+    <title>USSD Pay v3.0</title>
+    
+    <!-- Icons -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect fill='%230f172a' width='180' height='180'/><text x='90' y='110' font-size='80' font-weight='bold' text-anchor='middle' fill='%232563eb' font-family='Arial'>₪</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%230f172a' width='192' height='192' rx='45'/><text x='96' y='130' font-size='100' font-weight='bold' text-anchor='middle' fill='%232563eb' font-family='Arial'>₪</text></svg>">
+    
+    <!-- Manifest & SW -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-
-<!-- Splash -->
-
-<div id="splash">
-
-    <img
-    src="icons/logo.png"
-    alt="Logo"
-    class="splash-logo">
-
-    <h1>
-    USSD Pay
-    </h1>
-
-    <p>
-    Ver:2.8
-    </p>
-
-</div>
-
-<!-- Toast -->
-
-<div id="toast"></div>
-
-<!-- Loader -->
-
-<div id="loader">
-
-    <div class="spinner"></div>
-
-</div>
-
-<!-- App -->
-
-<div id="app">
-
-<header>
-
-    <div class="header-left">
-
-        <img
-        src="icons/logo.png"
-        class="logo-small"
-        alt="Logo">
-
-    </div>
-
-    <div class="header-center">
-
-        <h2>
-        USSD Pay
-        </h2>
-
-    </div>
-
-    <div class="header-right">
-
-        <a
-        href="settings.html"
-        class="settings-btn">
-
-        <i class="fa-solid fa-gear"></i>
-
-        </a>
-
-    </div>
-
-</header>
-
-<!-- Device Info -->
-
-<div class="device-card">
-
-    <div class="device-bar">
-
-        <span id="deviceName"></span>
-
-        <span id="currentDate"></span>
-
-        <span id="currentTime"></span>
-
-    </div>
-
-</div>
-
-<div class="device-card">
-
-    <div id="networkStatus">
-        🟢 متصل
-    </div>
-
-</div>
-
-
-<!-- Main Card -->
-
-<div class="card">
-
-    <div class="services">
-
-        <button
-        class="service active"
-        data-service="jawwal">
-
-        جوال باي
-
-        </button>
-
-        <button
-        class="service"
-        data-service="palpay">
-
-        بال باي
-
-        </button>
-
-    </div>
-
-    <select id="savedUsers">
-
-        <option value="">
-
-        اختر مستلم
-
-        </option>
-
-    </select>
-
-    <input
-    type="text"
-    id="receiverName"
-    placeholder="اسم المستلم">
-
-    <input
-    type="tel"
-    id="phone"
-    placeholder="رقم الهاتف">
-
-    <input
-    type="number"
-    id="amount"
-    placeholder="المبلغ">
-
-    <button
-    class="secondary-btn"
-    onclick="saveReceiver()">
-
-    <i class="fa-solid fa-bookmark"></i>
-
-    حفظ المستلم
-
-    </button>
-
-    <button
-    class="main-btn"
-    onclick="generateUSSD()">
-
-    <i class="fa-solid fa-paper-plane"></i>
-
-    تحويل الآن
-
-    </button>
-
-</div>
-
-<!-- History -->
-
-<div class="card">
-
-    <h3>
-
-        <i class="fa-solid fa-clock-rotate-left"></i>
-
-        آخر التحويلات
-
-    </h3>
-
-    <div
-    id="historyList">
-    </div>
-
-</div>
-
-<footer>
-
-    USSD Pay v2.8
-
-    <br>
-
-    تصميم وتطوير
-
-    <strong>
-
-    وسام فحجان
-
-    </strong>
-
-</footer>
-
-</div>
-
-<!-- USSD Modal -->
-
-<div
-id="ussdModal"
-class="modal">
-
-    <div
-    class="modal-content">
-
-        <h3>
-
-        <i class="fa-solid fa-code"></i>
-
-        مراجعة الكود
-
-        </h3>
-
-        <textarea
-        id="ussdPreview"
-        readonly>
-        </textarea>
-
-        <div class="modal-actions">
-
-        <button onclick="copyUSSD()">
-            <i class="fa-solid fa-copy"></i>
-        نسخ    
-        </button>
-
-        <button onclick="callUSSD()">
-            <i class="fa-solid fa-phone"></i>
-        اتصال    
-        </button>
-
-        <button onclick="closeUSSDModal()">
-            <i class="fa-solid fa-check"></i>
-         فهمت    
-        </button>
-
+    <!-- Splash Screen -->
+    <div id="splash" class="splash">
+        <div class="splash-content">
+            <div class="splash-icon">₪</div>
+            <h1>USSD Pay</h1>
+            <p>v3.0</p>
         </div>
-
     </div>
 
-</div>
+    <!-- Toast Notifications -->
+    <div id="toast" class="toast"></div>
 
-<!-- Install App -->
-
-<div
-id="installBanner"
-class="install-banner">
-
-    <div>
-
-        <strong>
-        📱 تثبيت USSD Pay
-        </strong>
-
-        <br>
-
-        <small>
-        تثبيت التطبيق للوصول السريع
-        </small>
-
+    <!-- Loading Spinner -->
+    <div id="loader" class="loader">
+        <div class="spinner"></div>
     </div>
 
-    <button
-    id="installBtn">
+    <!-- Main App -->
+    <div id="app" class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="header-left">
+                    <div class="app-icon">₪</div>
+                </div>
+                <div class="header-center">
+                    <h1 class="app-title">USSD Pay</h1>
+                    <p class="header-subtitle" id="deviceName">جهازك</p>
+                </div>
+                <div class="header-right">
+                    <button class="btn-icon" onclick="toggleTheme()" title="تغيير المظهر">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <a href="settings.html" class="btn-icon" title="الإعدادات">
+                        <i class="fas fa-cog"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="header-info">
+                <span id="currentDate" class="info-item"><i class="fas fa-calendar"></i> <span id="dateText"></span></span>
+                <span id="currentTime" class="info-item"><i class="fas fa-clock"></i> <span id="timeText"></span></span>
+                <span id="networkStatus" class="info-item status-online"><i class="fas fa-wifi"></i> متصل</span>
+            </div>
+        </header>
 
-    تثبيت
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Service Selection -->
+            <div class="card">
+                <h2 class="card-title">
+                    <i class="fas fa-mobile-alt"></i>
+                    اختر الخدمة
+                </h2>
+                <div class="services-grid">
+                    <button class="service-btn active" data-service="jawwal">
+                        <div class="service-icon">📱</div>
+                        <div class="service-name">جوال باي</div>
+                        <div class="service-desc">Jawwal Pay</div>
+                    </button>
+                    <button class="service-btn" data-service="palpay">
+                        <div class="service-icon">💳</div>
+                        <div class="service-name">بال باي</div>
+                        <div class="service-desc">Pal Pay</div>
+                    </button>
+                </div>
+            </div>
 
-    </button>
+            <!-- Form -->
+            <div class="card">
+                <h2 class="card-title">
+                    <i class="fas fa-money-bill-wave"></i>
+                    بيانات التحويل
+                </h2>
+                
+                <div class="form-group">
+                    <label for="receiverName" class="form-label">اسم المستلم</label>
+                    <input type="text" id="receiverName" class="form-input" placeholder="أدخل الاسم">
+                </div>
 
-</div>
+                <div class="form-group">
+                    <label for="phone" class="form-label">رقم الهاتف</label>
+                    <input type="tel" id="phone" class="form-input" placeholder="0799123456">
+                </div>
 
-<!-- iPhone Install -->
+                <div class="form-group">
+                    <label for="amount" class="form-label">المبلغ (شيقل)</label>
+                    <input type="number" id="amount" class="form-input" placeholder="50" min="1">
+                </div>
 
-<div
-id="iosInstallModal"
-class="modal">
+                <div class="form-actions">
+                    <button class="btn btn-secondary" onclick="saveReceiver()">
+                        <i class="fas fa-bookmark"></i>
+                        حفظ المستلم
+                    </button>
+                    <button class="btn btn-primary" onclick="generateUSSD()">
+                        <i class="fas fa-paper-plane"></i>
+                        تحويل الآن
+                    </button>
+                </div>
+            </div>
 
-    <div
-    class="modal-content">
+            <!-- Quick Contacts -->
+            <div id="favoritesSection" class="card" style="display:none;">
+                <h2 class="card-title">
+                    <i class="fas fa-star"></i>
+                    المفضلات
+                </h2>
+                <div id="favoritesList" class="favorites-grid"></div>
+            </div>
 
-        <h3>
-        📱 تثبيت USSD Pay
-        </h3>
+            <!-- Transaction History -->
+            <div class="card">
+                <h2 class="card-title">
+                    <i class="fas fa-history"></i>
+                    آخر التحويلات
+                </h2>
+                <div id="historyList" class="history-list"></div>
+                <button id="showMoreBtn" class="btn btn-secondary" style="display:none;" onclick="toggleHistory()">
+                    عرض المزيد
+                </button>
+            </div>
+        </main>
 
-        <br>
-
-        <p>
-        لتثبيت التطبيق على iPhone:
-        </p>
-
-        <br>
-
-        <p>
-        1️⃣ اضغط زر المشاركة
-        </p>
-
-        <p>
-        2️⃣ اختر
-        "إضافة إلى الشاشة الرئيسية"
-        </p>
-
-        <br>
-
-        <button
-        class="main-btn"
-        onclick="closeIOSInstall()">
-
-        فهمت
-
-        </button>
-
+        <!-- Footer -->
+        <footer class="footer">
+            <p>USSD Pay v3.0</p>
+            <p class="footer-credit">تطوير باستخدام <strong>HTML5 • CSS3 • JavaScript</strong></p>
+        </footer>
     </div>
 
-</div>
+    <!-- USSD Modal -->
+    <div id="ussdModal" class="modal">
+        <div class="modal-overlay" onclick="closeUSSDModal()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-code"></i> مراجعة الكود</h2>
+                <button class="btn-close" onclick="closeUSSDModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <textarea id="ussdPreview" class="ussd-preview" readonly></textarea>
+                <div class="ussd-info">
+                    <p><strong>📋 ملاحظة:</strong> انسخ الكود وألصقه في الهاتف أو اتصل مباشرة</p>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="copyUSSD()">
+                    <i class="fas fa-copy"></i>
+                    نسخ
+                </button>
+                <button class="btn btn-primary" onclick="callUSSD()">
+                    <i class="fas fa-phone"></i>
+                    اتصال
+                </button>
+                <button class="btn btn-outline" onclick="closeUSSDModal()">
+                    <i class="fas fa-check"></i>
+                    موافق
+                </button>
+            </div>
+        </div>
+    </div>
 
-<script src="script.js"></script>
+    <!-- Install Banner (Android/Desktop) -->
+    <div id="installBanner" class="install-banner">
+        <div class="install-content">
+            <div>
+                <strong>📱 تثبيت USSD Pay</strong>
+                <p>ثبّت التطبيق للوصول السريع</p>
+            </div>
+            <button id="installBtn" class="btn btn-primary">تثبيت</button>
+            <button class="btn-close" onclick="dismissInstall()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
 
-<script>
+    <!-- iOS Install Guide -->
+    <div id="iosModal" class="modal">
+        <div class="modal-overlay" onclick="closeIOSGuide()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📱 تثبيت على iPhone</h2>
+                <button class="btn-close" onclick="closeIOSGuide()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ol class="ios-steps">
+                    <li>اضغط زر <strong>المشاركة</strong> في أسفل الشاشة</li>
+                    <li>اختر <strong>إضافة إلى الشاشة الرئيسية</strong></li>
+                    <li>أدخل اسم التطبيق واضغط <strong>إضافة</strong></li>
+                </ol>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-primary" onclick="closeIOSGuide()">فهمت</button>
+            </div>
+        </div>
+    </div>
 
-if(
-'serviceWorker'
-in navigator
-){
-
-    window.addEventListener(
-    'load',
-
-    ()=>{
-
-        navigator
-        .serviceWorker
-        .register(
-            './sw.js'
-        );
-
-    });
-
-}
-
-</script>
-
+    <!-- Scripts -->
+    <script src="app.js" defer></script>
+    <script>
+        // Register Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('✓ SW registered'))
+                    .catch(err => console.log('✗ SW error:', err));
+            });
+        }
+    </script>
 </body>
-
 </html>

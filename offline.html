@@ -1,79 +1,227 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0f172a">
+    <title>بدون اتصال - USSD Pay</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect fill='%230f172a' width='180' height='180'/><text x='90' y='110' font-size='80' font-weight='bold' text-anchor='middle' fill='%232563eb' font-family='Arial'>₪</text></svg>">
+    <link rel="manifest" href="manifest.json">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #06b6d4;
+            --bg: #0f172a;
+            --text: #ffffff;
+            --text-secondary: #cbd5e1;
+        }
 
-<meta charset="UTF-8">
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-<meta
-name="viewport"
-content="width=device-width,initial-scale=1.0">
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+        }
 
-<title>
-بدون اتصال
-</title>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, var(--bg) 0%, #0a0f1f 100%);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
 
-<link
-rel="stylesheet"
-href="style.css">
+        .offline-container {
+            text-align: center;
+            max-width: 400px;
+            animation: slideUp 0.5s ease;
+        }
 
+        .offline-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: bounce 2s ease infinite;
+        }
+
+        .offline-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .offline-message {
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+
+        .offline-tips {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 20px;
+            text-align: right;
+        }
+
+        .offline-tips h3 {
+            font-size: 14px;
+            margin-bottom: 12px;
+            color: var(--primary);
+        }
+
+        .offline-tips ul {
+            list-style: none;
+            text-align: right;
+        }
+
+        .offline-tips li {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+
+        .offline-tips li::before {
+            content: '✓';
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .offline-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 14px 28px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .offline-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+        }
+
+        .offline-button:active {
+            transform: translateY(0);
+        }
+
+        .offline-status {
+            margin-top: 24px;
+            padding: 12px;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 12px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .offline-status strong {
+            color: #ef4444;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .offline-title {
+                font-size: 24px;
+            }
+
+            .offline-icon {
+                font-size: 60px;
+            }
+
+            .offline-button {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
-
 <body>
+    <div class="offline-container">
+        <div class="offline-icon">📶</div>
+        
+        <h1 class="offline-title">بدون اتصال بالإنترنت</h1>
+        
+        <p class="offline-message">
+            لا يمكن الوصول إلى هذه الصفحة في الوقت الحالي. تحقق من اتصالك بالإنترنت.
+        </p>
 
-<div id="app">
+        <div class="offline-tips">
+            <h3>💡 ما يمكنك فعله:</h3>
+            <ul>
+                <li>تفعيل الواي فاي أو البيانات</li>
+                <li>التحقق من الاتصال</li>
+                <li>تحديث الصفحة</li>
+                <li>فتح صفحة مخزنة مسبقاً</li>
+            </ul>
+        </div>
 
-<div class="card">
+        <button class="offline-button" onclick="location.reload()">
+            <i class="fas fa-sync"></i>
+            إعادة المحاولة
+        </button>
 
-<h1>
-📡
-</h1>
+        <div class="offline-status">
+            <strong>ملاحظة:</strong> إذا كنت تستخدم النسخة المثبتة من التطبيق، قد تتمكن من استخدام بعض المميزات بدون اتصال.
+        </div>
+    </div>
 
-<br>
+    <script>
+        // Listen for connection changes
+        window.addEventListener('online', () => {
+            setTimeout(() => {
+                location.reload();
+            }, 1000);
+        });
 
-<h2>
-لا يوجد اتصال بالإنترنت
-</h2>
-
-<br>
-
-<p>
-
-يبدو أنك غير متصل حالياً.
-
-إذا سبق فتح التطبيق فسيستمر
-بالعمل بالميزات المحفوظة محلياً.
-
-</p>
-
-<br>
-
-<a
-href="index.html"
-class="main-btn"
-style="
-display:block;
-text-align:center;
-text-decoration:none;
-">
-
-العودة للرئيسية
-
-</a>
-
-</div>
-
-<footer>
-
-تصميم
-<strong>
-وسام فحجان
-</strong>
-
-</footer>
-
-</div>
-
+        // Try to refresh every 5 seconds if connection returns
+        const checkConnection = setInterval(() => {
+            if (navigator.onLine) {
+                clearInterval(checkConnection);
+                location.reload();
+            }
+        }, 5000);
+    </script>
 </body>
-
 </html>

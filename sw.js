@@ -1,150 +1,122 @@
-const CACHE_NAME = "ussd-pay-v2.8";
-
-const FILES = [
-  "./",
-  "./index.html",
-  "./settings.html",
-  "./offline.html",
-  "./style.css",
-  "./script.js",
-  "./manifest.json",
-  "./css/all.min.css",
-  "./webfonts/fa-solid-900.woff2",
-  "./webfonts/fa-regular-400.woff2",
-  "./webfonts/fa-brands-400.woff2",
-  "./icons/logo.png",
-  "./icons/icon-192.png",
-  "./icons/icon-512.png",
-  "./icons/maskable-512.png"
+// USSD Pay v3.0 - Service Worker
+const CACHE_NAME = 'ussd-pay-v3.0';
+const STATIC_ASSETS = [
+    './',
+    './index.html',
+    './settings.html',
+    './offline.html',
+    './style.css',
+    './app.js',
+    './manifest.json'
 ];
 
-// Install
-
-self.addEventListener(
-"install",
-event=>{
-
+// Install Event
+self.addEventListener('install', event => {
     self.skipWaiting();
-
     event.waitUntil(
-
-        caches.open(
-            CACHE_NAME
-        )
-
-        .then(cache=>{
-
-            return cache.addAll(
-                FILES
-            );
-
+        caches.open(CACHE_NAME).then(cache => {
+            console.log('✓ Service Worker: Caching assets');
+            return cache.addAll(STATIC_ASSETS);
         })
-
     );
+});
 
-}
-);
-
-// Activate
-
-self.addEventListener(
-"activate",
-event=>{
-
+// Activate Event
+self.addEventListener('activate', event => {
     event.waitUntil(
-
-        caches.keys()
-
-        .then(keys=>{
-
+        caches.keys().then(cacheNames => {
             return Promise.all(
-
-                keys.map(key=>{
-
-                    if(
-                        key !== CACHE_NAME
-                    ){
-
-                        return caches.delete(
-                            key
-                        );
-
+                cacheNames.map(cacheName => {
+                    if (cacheName !== CACHE_NAME) {
+                        console.log('✓ Service Worker: Deleting old cache:', cacheName);
+                        return caches.delete(cacheName);
                     }
-
                 })
-
             );
-
         })
-
     );
-
     self.clients.claim();
+});
 
-}
-);
-
-// Fetch
-
-self.addEventListener(
-"fetch",
-event=>{
-
-    if(
-        event.request.method !==
-        "GET"
-    ){
+// Fetch Event - Network First Strategy for HTML, Cache First for Assets
+self.addEventListener('fetch', event => {
+    const { request } = event;
+    const url = new URL(request.url);
+    
+    // Skip non-GET requests
+    if (request.method !== 'GET') return;
+    
+    // Skip cross-origin requests
+    if (url.origin !== self.location.origin) {
+        event.respondWith(fetch(request).catch(() => new Response('No network')));
         return;
     }
-
+    
+    // HTML pages: Network First
+    if (request.headers.get('accept').includes('text/html')) {
+        event.respondWith(
+            fetch(request)
+                .then(response => {
+                    const clone = response.clone();
+                    caches.open(CACHE_NAME).then(cache => {
+                        cache.put(request, clone);
+                    });
+                    return response;
+                })
+                .catch(() => {
+                    return caches.match(request).then(cachedResponse => {
+                        return cachedResponse || caches.match('./offline.html');
+                    });
+                })
+        );
+        return;
+    }
+    
+    // Assets: Cache First
     event.respondWith(
-
-        fetch(event.request)
-
-        .then(response=>{
-
-            const clone =
-            response.clone();
-
-            caches.open(
-                CACHE_NAME
-            )
-
-            .then(cache=>{
-
-                cache.put(
-                    event.request,
-                    clone
-                );
-
+        caches.match(request).then(cachedResponse => {
+            if (cachedResponse) return cachedResponse;
+            
+            return fetch(request).then(response => {
+                const clone = response.clone();
+                caches.open(CACHE_NAME).then(cache => {
+                    cache.put(request, clone);
+                });
+                return response;
+            }).catch(() => {
+                // Fallback for different asset types
+                if (request.destination === 'image') {
+                    return new Response(
+                        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="#f0f0f0" width="100" height="100"/></svg>',
+                        { headers: { 'Content-Type': 'image/svg+xml' } }
+                    );
+                }
+                return new Response('Resource not available offline');
             });
-
-            return response;
-
         })
-
-        .catch(()=>{
-
-            return caches.match(
-                event.request
-            )
-
-            .then(response=>{
-
-                return (
-
-                    response ||
-
-                    caches.match(
-                        "./offline.html"
-                    )
-
-                );
-
-            });
-
-        })
-
     );
-
 });
+
+// Handle Messages from Clients
+self.addEventListener('message', event => {
+    if (event.data && event.data.type === 'SKIP_WAITING') {
+        self.skipWaiting();
+    }
+    if (event.data && event.data.type === 'CLEAR_CACHE') {
+        caches.delete(CACHE_NAME).then(() => {
+            console.log('✓ Service Worker: Cache cleared');
+        });
+    }
+});
+
+// Periodic Background Sync (if supported)
+self.addEventListener('sync', event => {
+    if (event.tag === 'sync-transactions') {
+        event.waitUntil(syncTransactions());
+    }
+});
+
+async function syncTransactions() {
+    // This would sync pending transactions when back online
+    console.log('✓ Service Worker: Syncing transactions');
+}
